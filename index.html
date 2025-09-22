@@ -1,0 +1,999 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Aura Gaming Gear | Elite Esports Peripherals</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            brand: '#7F00FF',
+            surface: '#1C1C1C',
+            outline: '#2A2A2A'
+          },
+          fontFamily: {
+            sans: ['Inter', 'sans-serif']
+          },
+          boxShadow: {
+            glow: '0 0 45px rgba(127, 0, 255, 0.35)'
+          }
+        }
+      }
+    };
+  </script>
+  <style>
+    html {
+      scroll-behavior: smooth;
+    }
+
+    body {
+      font-family: 'Inter', sans-serif;
+      background: radial-gradient(circle at top, rgba(127, 0, 255, 0.15), transparent 45%), #121212;
+    }
+
+    .modal-open {
+      overflow: hidden;
+    }
+
+    ::-webkit-scrollbar {
+      width: 8px;
+    }
+
+    ::-webkit-scrollbar-track {
+      background: rgba(255, 255, 255, 0.06);
+    }
+
+    ::-webkit-scrollbar-thumb {
+      background: rgba(127, 0, 255, 0.65);
+      border-radius: 9999px;
+    }
+  </style>
+</head>
+<body class="text-gray-100">
+  <!-- Search Overlay -->
+  <div id="search-overlay" class="fixed inset-0 z-[60] hidden">
+    <div class="absolute inset-0 bg-black/80 backdrop-blur-sm" data-overlay="search"></div>
+    <div class="relative flex h-full flex-col items-center justify-center px-4">
+      <div class="w-full max-w-2xl rounded-3xl bg-[#181818] p-8 shadow-2xl shadow-black/40">
+        <div class="mb-6 flex items-center justify-between">
+          <h2 class="text-lg font-semibold tracking-wide text-gray-300">Search Aura Catalog</h2>
+          <button id="close-search" class="rounded-full bg-white/5 p-2 text-gray-400 transition hover:bg-white/10">
+            <span class="sr-only">Close search overlay</span>
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
+            </svg>
+          </button>
+        </div>
+        <div class="flex items-center gap-3 rounded-full border border-white/10 bg-black/40 px-5 py-3">
+          <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-brand" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5">
+            <path stroke-linecap="round" stroke-linejoin="round" d="m21 21-4.35-4.35M18 10.5a7.5 7.5 0 1 1-15 0 7.5 7.5 0 0 1 15 0Z" />
+          </svg>
+          <input id="search-input" type="text" placeholder="Search products, brands, or categories" class="w-full bg-transparent text-sm outline-none placeholder:text-gray-500" />
+        </div>
+        <div id="search-results" class="mt-6 space-y-2">
+          <p class="text-sm text-gray-500">Start typing to explore our elite lineup.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Cart Modal -->
+  <div id="cart-modal" class="fixed inset-0 z-[70] hidden">
+    <div class="absolute inset-0 bg-black/70 transition-opacity" data-overlay="cart"></div>
+    <div class="relative flex h-full justify-end">
+      <aside class="flex h-full w-full max-w-md flex-col border-l border-white/10 bg-[#141414] shadow-2xl shadow-black/50">
+        <div class="flex items-center justify-between border-b border-white/10 px-6 py-5">
+          <h2 class="text-lg font-semibold tracking-wide">Your Cart</h2>
+          <button id="close-cart" class="rounded-full bg-white/5 p-2 text-gray-400 transition hover:bg-white/10">
+            <span class="sr-only">Close cart</span>
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
+            </svg>
+          </button>
+        </div>
+        <div id="cart-items" class="flex-1 space-y-4 overflow-y-auto px-6 py-6">
+          <p class="text-sm text-gray-500">Your cart is currently empty. Discover precision gear crafted for champions.</p>
+        </div>
+        <div class="border-t border-white/10 px-6 py-6">
+          <div class="mb-4 flex items-center justify-between text-sm">
+            <span class="text-gray-400">Subtotal</span>
+            <span id="cart-subtotal" class="text-base font-semibold text-white">$0.00</span>
+          </div>
+          <button id="checkout-button" class="group flex w-full items-center justify-center gap-2 rounded-full bg-brand px-6 py-3 text-sm font-semibold text-white shadow-glow transition hover:shadow-md hover:shadow-brand/50">
+            Proceed to Checkout
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 transition group-hover:translate-x-1" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M4.5 12h15m0 0-6-6m6 6-6 6" />
+            </svg>
+          </button>
+        </div>
+      </aside>
+    </div>
+  </div>
+
+  <!-- Product Detail Modal -->
+  <div id="product-modal" class="fixed inset-0 z-[65] hidden">
+    <div class="absolute inset-0 bg-black/70" data-overlay="product"></div>
+    <div class="relative flex h-full items-center justify-center px-4 py-10">
+      <div class="w-full max-w-5xl rounded-3xl border border-white/10 bg-[#161616] shadow-2xl shadow-black/40">
+        <div class="flex flex-col gap-10 p-6 md:flex-row md:p-10">
+          <div class="flex-1">
+            <div class="grid gap-4 sm:grid-cols-3">
+              <div class="relative overflow-hidden rounded-2xl bg-black/40 sm:col-span-3">
+                <img id="modal-primary-image" src="https://placehold.co/900x900" alt="Product primary view" class="h-full w-full object-cover transition duration-500" />
+              </div>
+              <div id="modal-gallery" class="grid grid-cols-3 gap-3"></div>
+            </div>
+          </div>
+          <div class="flex-1 space-y-6">
+            <div class="flex items-start justify-between gap-6">
+              <div>
+                <p id="modal-product-brand" class="text-xs uppercase tracking-[0.4em] text-brand">AURA</p>
+                <h3 id="modal-product-name" class="mt-2 text-2xl font-bold text-white">Product Name</h3>
+              </div>
+              <button id="close-product" class="rounded-full bg-white/5 p-2 text-gray-400 transition hover:bg-white/10">
+                <span class="sr-only">Close product detail</span>
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5">
+                  <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
+                </svg>
+              </button>
+            </div>
+            <p id="modal-product-price" class="text-xl font-semibold text-white">$0.00</p>
+            <p id="modal-product-description" class="text-sm leading-relaxed text-gray-400">
+              Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam at consequat odio, vel rutrum sapien.
+            </p>
+            <div class="space-y-4">
+              <label class="block text-xs font-semibold uppercase tracking-wider text-gray-400" for="modal-options">Select Option</label>
+              <select id="modal-options" class="w-full rounded-2xl border border-white/10 bg-black/40 px-4 py-3 text-sm text-gray-200 focus:border-brand focus:outline-none"></select>
+            </div>
+            <div class="flex items-center gap-4">
+              <div class="flex items-center rounded-full border border-white/10 bg-black/40 text-sm">
+                <button id="modal-quantity-decrease" class="px-4 py-3 text-gray-400 transition hover:text-white">-</button>
+                <span id="modal-quantity" class="min-w-[2.5rem] text-center font-semibold">1</span>
+                <button id="modal-quantity-increase" class="px-4 py-3 text-gray-400 transition hover:text-white">+</button>
+              </div>
+              <button id="modal-add-to-cart" class="flex-1 rounded-full bg-brand px-6 py-3 text-sm font-semibold text-white shadow-glow transition hover:shadow-md hover:shadow-brand/50">
+                Add to Cart
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Header -->
+  <header class="fixed inset-x-0 top-0 z-50 border-b border-white/5 bg-[#121212]/90 backdrop-blur-xl">
+    <div class="mx-auto flex max-w-6xl items-center justify-between px-4 py-4">
+      <a href="#top" class="text-xl font-semibold tracking-[0.5em] text-white">AURA</a>
+      <nav class="hidden items-center gap-8 text-sm font-medium text-gray-300 md:flex">
+        <a href="#products" data-nav-filter="All" class="transition hover:text-white">All</a>
+        <a href="#products" data-nav-filter="Mice" class="transition hover:text-white">Mice</a>
+        <a href="#products" data-nav-filter="Keyboards" class="transition hover:text-white">Keyboards</a>
+        <a href="#products" data-nav-filter="Mousepads" class="transition hover:text-white">Mousepads</a>
+        <a href="#deals" class="transition hover:text-white">Deals</a>
+      </nav>
+      <div class="flex items-center gap-3">
+        <button id="open-search" class="rounded-full bg-white/5 p-2 text-gray-300 transition hover:bg-white/10 hover:text-white">
+          <span class="sr-only">Open search</span>
+          <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5">
+            <path stroke-linecap="round" stroke-linejoin="round" d="m21 21-4.35-4.35M18 10.5a7.5 7.5 0 1 1-15 0 7.5 7.5 0 0 1 15 0Z" />
+          </svg>
+        </button>
+        <button id="open-cart" class="relative rounded-full bg-white/5 p-2 text-gray-300 transition hover:bg-white/10 hover:text-white">
+          <span class="sr-only">Open shopping cart</span>
+          <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M2.25 3h1.386c.51 0 .955.343 1.087.835l.383 1.437m0 0L6.6 12.75a1.125 1.125 0 0 0 1.092.84h8.272a1.125 1.125 0 0 0 1.092-.84l1.196-5.478a.563.563 0 0 0-.548-.684H5.03m0 0-.524-1.962A1.125 1.125 0 0 0 3.405 3H2.25m3.75 15.75a1.5 1.5 0 1 0 3 0 1.5 1.5 0 0 0-3 0Zm10.5 0a1.5 1.5 0 1 0 3 0 1.5 1.5 0 0 0-3 0Z" />
+          </svg>
+          <span id="cart-count" class="absolute -right-1 -top-1 flex h-5 min-w-[1.25rem] items-center justify-center rounded-full bg-brand px-1 text-[10px] font-semibold text-white">0</span>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <main id="top" class="pt-28">
+    <!-- Hero Section -->
+    <section class="mx-auto max-w-6xl px-4 pb-20">
+      <div class="relative overflow-hidden rounded-3xl border border-white/10 bg-[#161616]">
+        <div class="absolute inset-0 bg-gradient-to-r from-black/80 via-black/50 to-transparent"></div>
+        <img src="https://placehold.co/1600x900/png?text=Next-Gen+Setup" alt="Premium gaming setup" class="h-full w-full object-cover" />
+        <div class="relative flex min-h-[420px] flex-col justify-center gap-6 px-8 py-16 sm:px-16">
+          <p class="text-xs font-semibold uppercase tracking-[0.6em] text-gray-300">Aura Gaming Gear</p>
+          <h1 class="max-w-xl text-4xl font-bold leading-tight text-white sm:text-5xl">Perfection in every pixel</h1>
+          <p class="max-w-lg text-sm text-gray-300 sm:text-base">
+            Engineered for victory. Explore our curated collection of elite esports gear built for unrivaled speed, precision, and control.
+          </p>
+          <div class="flex flex-wrap items-center gap-4">
+            <a href="#products" class="inline-flex items-center gap-3 rounded-full bg-brand px-8 py-3 text-sm font-semibold uppercase tracking-widest text-white shadow-glow transition hover:shadow-md hover:shadow-brand/50">
+              Shop New Arrivals
+              <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M4.5 12h15m0 0-6-6m6 6-6 6" />
+              </svg>
+            </a>
+            <span class="text-xs uppercase tracking-[0.5em] text-gray-400">Trusted by pro teams worldwide</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Featured Products -->
+    <section class="mx-auto max-w-6xl px-4 pb-20">
+      <div class="mb-10 flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
+        <div>
+          <p class="text-xs font-semibold uppercase tracking-[0.6em] text-brand">Featured</p>
+          <h2 class="mt-2 text-2xl font-bold text-white sm:text-3xl">Best Sellers</h2>
+        </div>
+        <p class="max-w-xl text-sm text-gray-400">
+          Meet the essentials trusted by top-tier esports talent. Crafted with cutting-edge materials and tuned for relentless performance in every match.
+        </p>
+      </div>
+      <div id="featured-grid" class="grid gap-6 md:grid-cols-2 xl:grid-cols-4"></div>
+    </section>
+
+    <!-- Main Products Section -->
+    <section id="products" class="mx-auto max-w-6xl px-4 pb-20">
+      <div class="mb-10 flex flex-col gap-6">
+        <div class="flex flex-col gap-3 sm:flex-row sm:items-end sm:justify-between">
+          <div>
+            <p class="text-xs font-semibold uppercase tracking-[0.6em] text-brand">Catalog</p>
+            <h2 class="mt-2 text-2xl font-bold text-white sm:text-3xl">Precision Crafted for Champions</h2>
+          </div>
+          <p class="max-w-md text-sm text-gray-400">
+            Choose from tournament-ready mice, hot-swappable keyboards, and friction-tuned mousepads designed to elevate your playstyle.
+          </p>
+        </div>
+        <div id="filter-tabs" class="flex flex-wrap gap-3">
+          <button type="button" data-category="All" class="filter-tab rounded-full border border-white/10 bg-white/5 px-5 py-2 text-xs font-semibold uppercase tracking-[0.4em] text-gray-300 transition hover:border-brand hover:text-white">
+            All
+          </button>
+          <button type="button" data-category="Mice" class="filter-tab rounded-full border border-white/10 bg-white/5 px-5 py-2 text-xs font-semibold uppercase tracking-[0.4em] text-gray-300 transition hover:border-brand hover:text-white">
+            Mice
+          </button>
+          <button type="button" data-category="Keyboards" class="filter-tab rounded-full border border-white/10 bg-white/5 px-5 py-2 text-xs font-semibold uppercase tracking-[0.4em] text-gray-300 transition hover:border-brand hover:text-white">
+            Keyboards
+          </button>
+          <button type="button" data-category="Mousepads" class="filter-tab rounded-full border border-white/10 bg-white/5 px-5 py-2 text-xs font-semibold uppercase tracking-[0.4em] text-gray-300 transition hover:border-brand hover:text-white">
+            Mousepads
+          </button>
+        </div>
+      </div>
+      <div id="product-grid" class="grid gap-6 sm:grid-cols-2 lg:grid-cols-3"></div>
+      <div id="product-empty-state" class="hidden rounded-3xl border border-dashed border-white/10 bg-black/30 p-10 text-center text-sm text-gray-400">
+        No products found for this category. Try another filter or explore our featured gear above.
+      </div>
+    </section>
+
+    <!-- Deals Section -->
+    <section id="deals" class="mx-auto max-w-6xl px-4 pb-24">
+      <div class="rounded-3xl border border-brand/30 bg-gradient-to-r from-brand/20 via-transparent to-transparent p-10">
+        <div class="flex flex-col gap-8 lg:flex-row lg:items-center lg:justify-between">
+          <div class="max-w-xl">
+            <p class="text-xs font-semibold uppercase tracking-[0.6em] text-brand">Seasonal Deals</p>
+            <h2 class="mt-2 text-2xl font-bold text-white sm:text-3xl">Elevate Your Setup for Less</h2>
+            <p class="mt-4 text-sm text-gray-300">
+              Limited-time bundles and exclusive price drops for the community. Gear up with pro-tier hardware while supplies last.
+            </p>
+          </div>
+          <a href="#products" class="inline-flex items-center gap-3 rounded-full border border-brand/60 px-6 py-3 text-xs font-semibold uppercase tracking-[0.4em] text-brand transition hover:bg-brand hover:text-white">
+            Shop Flash Deals
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M4.5 12h15m0 0-6-6m6 6-6 6" />
+            </svg>
+          </a>
+        </div>
+        <div id="deal-grid" class="mt-10 grid gap-6 md:grid-cols-3"></div>
+      </div>
+    </section>
+  </main>
+
+  <!-- Footer -->
+  <footer class="border-t border-white/5 bg-[#101010]">
+    <div class="mx-auto grid max-w-6xl gap-10 px-4 py-16 sm:grid-cols-3">
+      <div class="space-y-4">
+        <span class="text-lg font-semibold tracking-[0.5em] text-white">AURA</span>
+        <p class="text-sm text-gray-400">
+          Crafted for the relentless. Aura Gaming Gear delivers uncompromising precision and design for esports athletes ready to push beyond limits.
+        </p>
+      </div>
+      <div>
+        <p class="text-xs font-semibold uppercase tracking-[0.5em] text-gray-500">Explore</p>
+        <ul class="mt-4 space-y-2 text-sm text-gray-400">
+          <li><a href="#about" class="transition hover:text-white">About Us</a></li>
+          <li><a href="#contact" class="transition hover:text-white">Contact</a></li>
+          <li><a href="#faq" class="transition hover:text-white">FAQ</a></li>
+          <li><a href="#shipping" class="transition hover:text-white">Shipping &amp; Returns</a></li>
+        </ul>
+      </div>
+      <div>
+        <p class="text-xs font-semibold uppercase tracking-[0.5em] text-gray-500">Connect</p>
+        <div class="mt-4 flex gap-3">
+          <a href="https://twitter.com" class="flex h-10 w-10 items-center justify-center rounded-full border border-white/10 text-gray-300 transition hover:border-brand hover:text-brand" aria-label="Twitter">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" viewBox="0 0 24 24" fill="currentColor">
+              <path d="M21.75 4.5a6.5 6.5 0 0 1-1.89.518 3.27 3.27 0 0 0 1.44-1.815 6.525 6.525 0 0 1-2.07.812A3.262 3.262 0 0 0 12.75 6.52a9.257 9.257 0 0 1-6.724-3.41 3.26 3.26 0 0 0 1.011 4.352A3.232 3.232 0 0 1 5 6.87v.041a3.26 3.26 0 0 0 2.617 3.197 3.277 3.277 0 0 1-.857.114 3.09 3.09 0 0 1-.614-.058 3.266 3.266 0 0 0 3.046 2.262A6.538 6.538 0 0 1 4.5 14.712a6.75 6.75 0 0 1-.78-.045 9.209 9.209 0 0 0 4.988 1.462c5.986 0 9.26-4.964 9.26-9.262 0-.142-.003-.283-.01-.423A6.62 6.62 0 0 0 21.75 4.5Z" />
+            </svg>
+          </a>
+          <a href="https://instagram.com" class="flex h-10 w-10 items-center justify-center rounded-full border border-white/10 text-gray-300 transition hover:border-brand hover:text-brand" aria-label="Instagram">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" viewBox="0 0 24 24" fill="currentColor">
+              <path d="M12 7.75a4.25 4.25 0 1 0 0 8.5 4.25 4.25 0 0 0 0-8.5Zm8.25-3a3 3 0 0 0-3-3h-10.5a3 3 0 0 0-3 3v10.5a3 3 0 0 0 3 3h10.5a3 3 0 0 0 3-3V4.75Zm-2 0a1 1 0 0 1 1 1v10.5a1 1 0 0 1-1 1h-10.5a1 1 0 0 1-1-1V4.75a1 1 0 0 1 1-1h10.5Zm-.75 1.75a1 1 0 1 0-2 0 1 1 0 0 0 2 0Z" />
+            </svg>
+          </a>
+          <a href="https://discord.com" class="flex h-10 w-10 items-center justify-center rounded-full border border-white/10 text-gray-300 transition hover:border-brand hover:text-brand" aria-label="Discord">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" viewBox="0 0 24 24" fill="currentColor">
+              <path d="M20.317 4.37a19.791 19.791 0 0 0-4.885-1.515.076.076 0 0 0-.081.038c-.211.375-.444.865-.608 1.249-1.844-.276-3.68-.276-5.486 0-.164-.402-.415-.874-.626-1.249a.077.077 0 0 0-.081-.038 19.736 19.736 0 0 0-4.885 1.515.069.069 0 0 0-.032.028C2.18 8.022 1.5 11.58 1.833 15.095a.082.082 0 0 0 .031.056 19.9 19.9 0 0 0 5.993 3.04.078.078 0 0 0 .084-.028c.461-.63.874-1.295 1.226-1.994a.076.076 0 0 0-.041-.104c-.652-.247-1.27-.547-1.862-.892a.077.077 0 0 1-.008-.127c.125-.094.25-.191.37-.287a.077.077 0 0 1 .081-.01c3.927 1.794 8.18 1.794 12.061 0a.077.077 0 0 1 .082.009c.12.096.245.194.37.288a.077.077 0 0 1-.007.127c-.592.351-1.21.65-1.863.897a.077.077 0 0 0-.041.104c.36.699.773 1.365 1.226 1.994a.077.077 0 0 0 .084.028 19.874 19.874 0 0 0 6.002-3.04.077.077 0 0 0 .031-.055c.5-5.177-.838-8.705-3.548-10.698a.061.061 0 0 0-.031-.029Zm-12.573 8.108c-.794 0-1.45-.73-1.45-1.631 0-.9.641-1.631 1.45-1.631.818 0 1.468.739 1.45 1.631 0 .9-.641 1.631-1.45 1.631Zm8.509 0c-.794 0-1.45-.73-1.45-1.631 0-.9.641-1.631 1.45-1.631.818 0 1.468.739 1.45 1.631 0 .9-.632 1.631-1.45 1.631Z" />
+            </svg>
+          </a>
+        </div>
+      </div>
+    </div>
+    <div class="border-t border-white/5 py-6 text-center text-xs text-gray-500">
+      © <span id="year"></span> Aura Gaming Gear. All rights reserved.
+    </div>
+  </footer>
+
+  <script>
+    const products = [
+      {
+        id: 'mouse-eclipse',
+        name: 'Eclipse Pro Wireless Mouse',
+        brand: 'Aura Labs',
+        price: 149.99,
+        category: 'Mice',
+        imageUrl: 'https://placehold.co/600x600/png?text=Eclipse+Mouse',
+        gallery: [
+          'https://placehold.co/900x900/png?text=Eclipse+Angle',
+          'https://placehold.co/900x900/png?text=Eclipse+Grip',
+          'https://placehold.co/900x900/png?text=Eclipse+Hero'
+        ],
+        description: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Praesent vitae magna lacus. Integer convallis velit at euismod mattis.',
+        options: ['Onyx Black', 'Aurora White'],
+        tags: ['featured', 'deal']
+      },
+      {
+        id: 'mouse-vega',
+        name: 'Vega Ultralight Mouse',
+        brand: 'Aura Labs',
+        price: 119.0,
+        category: 'Mice',
+        imageUrl: 'https://placehold.co/600x600/png?text=Vega+Mouse',
+        gallery: [
+          'https://placehold.co/900x900/png?text=Vega+Top',
+          'https://placehold.co/900x900/png?text=Vega+Side',
+          'https://placehold.co/900x900/png?text=Vega+Detail'
+        ],
+        description: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse porta tortor vel orci imperdiet finibus.',
+        options: ['Nightfall', 'Nebula'],
+        tags: ['featured']
+      },
+      {
+        id: 'mouse-celestial',
+        name: 'Celestial Tournament Mouse',
+        brand: 'Nova Core',
+        price: 99.99,
+        category: 'Mice',
+        imageUrl: 'https://placehold.co/600x600/png?text=Celestial+Mouse',
+        gallery: [
+          'https://placehold.co/900x900/png?text=Celestial+Angle',
+          'https://placehold.co/900x900/png?text=Celestial+Macro',
+          'https://placehold.co/900x900/png?text=Celestial+Setup'
+        ],
+        description: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nam non iaculis mauris. Sed porttitor lorem ut ligula bibendum aliquam.',
+        options: ['Phantom Black', 'Cosmic Teal'],
+        tags: ['featured']
+      },
+      {
+        id: 'mouse-phantom',
+        name: 'Phantom Elite Mini',
+        brand: 'Spectra Forge',
+        price: 139.5,
+        category: 'Mice',
+        imageUrl: 'https://placehold.co/600x600/png?text=Phantom+Mini',
+        gallery: [
+          'https://placehold.co/900x900/png?text=Phantom+Detail',
+          'https://placehold.co/900x900/png?text=Phantom+Grip',
+          'https://placehold.co/900x900/png?text=Phantom+Case'
+        ],
+        description: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed et arcu sodales, posuere urna sit amet, fermentum dolor.',
+        options: ['Stealth Matte', 'Iridescent'],
+        tags: ['featured']
+      },
+      {
+        id: 'keyboard-stratus',
+        name: 'Stratus 75 Mechanical Keyboard',
+        brand: 'Aura Labs',
+        price: 189.99,
+        category: 'Keyboards',
+        imageUrl: 'https://placehold.co/600x600/png?text=Stratus+75',
+        gallery: [
+          'https://placehold.co/900x900/png?text=Stratus+Top',
+          'https://placehold.co/900x900/png?text=Stratus+Side',
+          'https://placehold.co/900x900/png?text=Stratus+RGB'
+        ],
+        description: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Cras tincidunt luctus gravida. Integer malesuada sem sed erat efficitur vehicula.',
+        options: ['Linear Switches', 'Tactile Switches'],
+        tags: ['deal']
+      },
+      {
+        id: 'keyboard-nebula',
+        name: 'Nebula 80 Hot-Swap Keyboard',
+        brand: 'Keystone',
+        price: 219.99,
+        category: 'Keyboards',
+        imageUrl: 'https://placehold.co/600x600/png?text=Nebula+80',
+        gallery: [
+          'https://placehold.co/900x900/png?text=Nebula+Profile',
+          'https://placehold.co/900x900/png?text=Nebula+Caps',
+          'https://placehold.co/900x900/png?text=Nebula+Desk'
+        ],
+        description: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aliquam ac lectus sed leo varius aliquet id a felis.',
+        options: ['Ice Switches', 'Storm Switches'],
+        tags: []
+      },
+      {
+        id: 'keyboard-spectra',
+        name: 'Spectra TKL Compact Keyboard',
+        brand: 'Spectra Forge',
+        price: 199.0,
+        category: 'Keyboards',
+        imageUrl: 'https://placehold.co/600x600/png?text=Spectra+TKL',
+        gallery: [
+          'https://placehold.co/900x900/png?text=Spectra+Angle',
+          'https://placehold.co/900x900/png?text=Spectra+RGB',
+          'https://placehold.co/900x900/png?text=Spectra+Desk'
+        ],
+        description: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer varius, tellus sed congue euismod, leo ligula rhoncus mauris.',
+        options: ['Silver Switches', 'Golden Switches'],
+        tags: []
+      },
+      {
+        id: 'keyboard-cascade',
+        name: 'Cascade Low-Profile Keyboard',
+        brand: 'Zenith Works',
+        price: 174.5,
+        category: 'Keyboards',
+        imageUrl: 'https://placehold.co/600x600/png?text=Cascade+LP',
+        gallery: [
+          'https://placehold.co/900x900/png?text=Cascade+Detail',
+          'https://placehold.co/900x900/png?text=Cascade+Side',
+          'https://placehold.co/900x900/png?text=Cascade+Keys'
+        ],
+        description: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. In vel augue sed nulla pretium convallis quis id arcu.',
+        options: ['Mercury Switches', 'Carbon Switches'],
+        tags: []
+      },
+      {
+        id: 'mousepad-lumina',
+        name: 'Lumina Control Mousepad',
+        brand: 'Aura Labs',
+        price: 59.99,
+        category: 'Mousepads',
+        imageUrl: 'https://placehold.co/600x600/png?text=Lumina+Pad',
+        gallery: [
+          'https://placehold.co/900x900/png?text=Lumina+Texture',
+          'https://placehold.co/900x900/png?text=Lumina+Desk',
+          'https://placehold.co/900x900/png?text=Lumina+Edge'
+        ],
+        description: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Duis luctus orci et dictum pulvinar.',
+        options: ['XL', 'XXL'],
+        tags: ['deal']
+      },
+      {
+        id: 'mousepad-orbit',
+        name: 'Orbit Hybrid Mousepad',
+        brand: 'Nova Core',
+        price: 49.5,
+        category: 'Mousepads',
+        imageUrl: 'https://placehold.co/600x600/png?text=Orbit+Pad',
+        gallery: [
+          'https://placehold.co/900x900/png?text=Orbit+Detail',
+          'https://placehold.co/900x900/png?text=Orbit+Surface',
+          'https://placehold.co/900x900/png?text=Orbit+Edge'
+        ],
+        description: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec ultricies ligula et metus varius, ac ultricies odio vulputate.',
+        options: ['XL', 'XXL'],
+        tags: []
+      },
+      {
+        id: 'mousepad-arc',
+        name: 'Arc Velocity Mousepad',
+        brand: 'Spectra Forge',
+        price: 69.99,
+        category: 'Mousepads',
+        imageUrl: 'https://placehold.co/600x600/png?text=Arc+Velocity',
+        gallery: [
+          'https://placehold.co/900x900/png?text=Arc+Texture',
+          'https://placehold.co/900x900/png?text=Arc+Setup',
+          'https://placehold.co/900x900/png?text=Arc+Edge'
+        ],
+        description: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. In tristique massa ut felis dignissim posuere.',
+        options: ['XL', 'XXL'],
+        tags: []
+      },
+      {
+        id: 'mousepad-titan',
+        name: 'Titan Esports Desk Mat',
+        brand: 'Aura Labs',
+        price: 89.99,
+        category: 'Mousepads',
+        imageUrl: 'https://placehold.co/600x600/png?text=Titan+Desk+Mat',
+        gallery: [
+          'https://placehold.co/900x900/png?text=Titan+Detail',
+          'https://placehold.co/900x900/png?text=Titan+Workspace',
+          'https://placehold.co/900x900/png?text=Titan+Surface'
+        ],
+        description: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Curabitur dapibus augue in lorem tristique, eu sodales sapien tristique.',
+        options: ['XXL', 'Max'],
+        tags: ['deal']
+      }
+    ];
+
+    const featuredProductIds = ['mouse-eclipse', 'mouse-vega', 'mouse-celestial', 'mouse-phantom'];
+
+    const cart = [];
+    let activeFilter = 'All';
+    let activeProduct = null;
+    let modalQuantity = 1;
+    let quickAddTimeouts = new Map();
+
+    const featuredGrid = document.getElementById('featured-grid');
+    const productGrid = document.getElementById('product-grid');
+    const productEmptyState = document.getElementById('product-empty-state');
+    const cartItemsContainer = document.getElementById('cart-items');
+    const cartSubtotalEl = document.getElementById('cart-subtotal');
+    const cartCountEl = document.getElementById('cart-count');
+    const dealGrid = document.getElementById('deal-grid');
+
+    const filterTabs = document.querySelectorAll('.filter-tab');
+    const navFilterLinks = document.querySelectorAll('[data-nav-filter]');
+
+    const productModal = document.getElementById('product-modal');
+    const cartModal = document.getElementById('cart-modal');
+    const searchOverlay = document.getElementById('search-overlay');
+
+    const modalProductName = document.getElementById('modal-product-name');
+    const modalProductBrand = document.getElementById('modal-product-brand');
+    const modalProductPrice = document.getElementById('modal-product-price');
+    const modalProductDescription = document.getElementById('modal-product-description');
+    const modalOptions = document.getElementById('modal-options');
+    const modalGallery = document.getElementById('modal-gallery');
+    const modalPrimaryImage = document.getElementById('modal-primary-image');
+    const modalQuantityDisplay = document.getElementById('modal-quantity');
+
+    const searchInput = document.getElementById('search-input');
+    const searchResults = document.getElementById('search-results');
+
+    function formatPrice(value) {
+      return `$${value.toFixed(2)}`;
+    }
+
+    function renderFeatured() {
+      featuredGrid.innerHTML = '';
+      featuredProductIds
+        .map((id) => products.find((product) => product.id === id))
+        .filter(Boolean)
+        .forEach((product) => {
+          const card = createProductCard(product, { compact: true });
+          featuredGrid.appendChild(card);
+        });
+    }
+
+    function renderDeals() {
+      if (!dealGrid) return;
+      dealGrid.innerHTML = '';
+      const dealProducts = products.filter((product) => product.tags?.includes('deal')).slice(0, 3);
+      dealProducts.forEach((product) => {
+        const card = document.createElement('article');
+        card.className = 'group relative overflow-hidden rounded-3xl border border-brand/30 bg-[#161616] p-6 transition duration-300 hover:-translate-y-1 hover:border-brand hover:shadow-glow';
+        card.innerHTML = `
+          <div class="flex items-center justify-between">
+            <span class="rounded-full bg-brand/20 px-3 py-1 text-[11px] font-semibold uppercase tracking-[0.3em] text-brand">Deal</span>
+            <span class="text-xs text-brand/80">Save 15%</span>
+          </div>
+          <div class="mt-6 overflow-hidden rounded-2xl bg-black/40">
+            <img src="${product.imageUrl}" alt="${product.name}" class="h-40 w-full object-cover transition duration-500 group-hover:scale-105" />
+          </div>
+          <h3 class="mt-6 text-lg font-semibold text-white">${product.name}</h3>
+          <p class="text-sm text-gray-400">${product.brand}</p>
+          <div class="mt-4 flex items-center justify-between">
+            <span class="text-xl font-semibold text-white">${formatPrice(product.price)}</span>
+            <button class="rounded-full border border-brand/40 px-4 py-2 text-xs font-semibold uppercase tracking-[0.3em] text-brand transition hover:bg-brand hover:text-white" data-quick-add="${product.id}">Quick Add</button>
+          </div>
+        `;
+        const quickAddButton = card.querySelector('[data-quick-add]');
+        quickAddButton.addEventListener('click', (event) => {
+          event.stopPropagation();
+          handleQuickAdd(product, quickAddButton);
+        });
+        card.addEventListener('click', () => openProductModal(product.id));
+        dealGrid.appendChild(card);
+      });
+    }
+
+    function renderProducts() {
+      productGrid.innerHTML = '';
+      const filteredProducts = activeFilter === 'All' ? products : products.filter((product) => product.category === activeFilter);
+      if (filteredProducts.length === 0) {
+        productEmptyState.classList.remove('hidden');
+        return;
+      }
+      productEmptyState.classList.add('hidden');
+      filteredProducts.forEach((product) => {
+        const card = createProductCard(product);
+        productGrid.appendChild(card);
+      });
+    }
+
+    function createProductCard(product, options = {}) {
+      const card = document.createElement('article');
+      card.className = `group relative flex h-full cursor-pointer flex-col overflow-hidden rounded-3xl border border-white/10 bg-[#161616] transition duration-300 hover:-translate-y-1 hover:border-brand hover:shadow-glow ${options.compact ? 'p-5' : 'p-6'}`;
+      card.innerHTML = `
+        <div class="relative overflow-hidden rounded-2xl bg-black/40">
+          <img src="${product.imageUrl}" alt="${product.name}" class="h-48 w-full object-cover transition duration-500 group-hover:scale-105" />
+          <div class="absolute inset-x-0 bottom-0 flex justify-between bg-gradient-to-t from-black/70 via-black/20 to-transparent px-4 py-3 text-[11px] font-semibold uppercase tracking-[0.3em] text-gray-300">
+            <span>${product.brand}</span>
+            <span>${product.category}</span>
+          </div>
+        </div>
+        <div class="mt-6 flex flex-1 flex-col gap-3">
+          <h3 class="text-lg font-semibold text-white">${product.name}</h3>
+          <p class="text-sm text-gray-400">${product.description.substring(0, 85)}...</p>
+          <div class="mt-auto flex items-center justify-between">
+            <span class="text-xl font-semibold text-white">${formatPrice(product.price)}</span>
+            <button class="quick-add-button rounded-full bg-brand/80 px-4 py-2 text-xs font-semibold uppercase tracking-[0.3em] text-white transition hover:bg-brand" data-product-id="${product.id}">Quick Add</button>
+          </div>
+        </div>
+      `;
+      const quickAddButton = card.querySelector('.quick-add-button');
+      quickAddButton.addEventListener('click', (event) => {
+        event.stopPropagation();
+        handleQuickAdd(product, quickAddButton);
+      });
+      card.addEventListener('click', () => openProductModal(product.id));
+      return card;
+    }
+
+    function handleQuickAdd(product, button) {
+      addToCart(product.id, 1);
+      if (!button.dataset.originalText) {
+        button.dataset.originalText = button.textContent.trim();
+      }
+      if (!button.dataset.originalClasses) {
+        button.dataset.originalClasses = button.className;
+      }
+      button.textContent = 'Added!';
+      button.classList.add('bg-white', 'text-brand', 'shadow-glow');
+      const previousTimeout = quickAddTimeouts.get(button);
+      if (previousTimeout) {
+        clearTimeout(previousTimeout);
+      }
+      const timeout = setTimeout(() => {
+        button.textContent = button.dataset.originalText;
+        button.className = button.dataset.originalClasses;
+        quickAddTimeouts.delete(button);
+      }, 1500);
+      quickAddTimeouts.set(button, timeout);
+    }
+
+    function addToCart(productId, quantity = 1) {
+      const existingItem = cart.find((item) => item.id === productId);
+      if (existingItem) {
+        existingItem.quantity += quantity;
+      } else {
+        cart.push({ id: productId, quantity });
+      }
+      updateCartUI();
+    }
+
+    function updateCartUI() {
+      cartItemsContainer.innerHTML = '';
+      if (cart.length === 0) {
+        cartItemsContainer.innerHTML = '<p class="text-sm text-gray-500">Your cart is currently empty. Discover precision gear crafted for champions.</p>';
+      }
+      let subtotal = 0;
+      cart.forEach((item) => {
+        const product = products.find((product) => product.id === item.id);
+        if (!product) return;
+        const lineTotal = product.price * item.quantity;
+        subtotal += lineTotal;
+        const cartItem = document.createElement('div');
+        cartItem.className = 'flex items-center gap-4 rounded-2xl border border-white/5 bg-black/30 p-4';
+        cartItem.innerHTML = `
+          <div class="h-16 w-16 overflow-hidden rounded-xl bg-black/50">
+            <img src="${product.imageUrl}" alt="${product.name}" class="h-full w-full object-cover" />
+          </div>
+          <div class="flex-1">
+            <div class="flex items-start justify-between gap-3">
+              <div>
+                <h4 class="text-sm font-semibold text-white">${product.name}</h4>
+                <p class="text-xs text-gray-400">${product.brand}</p>
+              </div>
+              <button class="remove-item text-gray-500 transition hover:text-white" data-remove-id="${product.id}">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5">
+                  <path stroke-linecap="round" stroke-linejoin="round" d="m14.74 9-.346 9m-4.788 0L9.26 9m9.968-3.21c.342.052.682.107 1.022.166m-1.022-.165L19.423 19.75A1.125 1.125 0 0 1 18.304 21H5.697a1.125 1.125 0 0 1-1.119-1.25L5.772 5.79m13.456 0a48.108 48.108 0 0 0-3.478-.397m-12 .562c.34-.059.68-.114 1.022-.165m0 0a48.11 48.11 0 0 1 3.478-.397m7.5 0v-.916c0-1.18-.91-2.164-2.09-2.201a51.964 51.964 0 0 0-3.32 0c-1.18.037-2.09 1.022-2.09 2.201v.916m7.5 0a48.667 48.667 0 0 0-7.5 0' />
+                </svg>
+              </button>
+            </div>
+            <div class="mt-3 flex items-center justify-between">
+              <div class="flex items-center rounded-full border border-white/10">
+                <button class="change-quantity px-3 py-1 text-xs text-gray-400 transition hover:text-white" data-delta="-1" data-product-id="${product.id}">-</button>
+                <span class="px-3 text-sm font-semibold text-white">${item.quantity}</span>
+                <button class="change-quantity px-3 py-1 text-xs text-gray-400 transition hover:text-white" data-delta="1" data-product-id="${product.id}">+</button>
+              </div>
+              <span class="text-sm font-semibold text-white">${formatPrice(lineTotal)}</span>
+            </div>
+          </div>
+        `;
+        cartItemsContainer.appendChild(cartItem);
+      });
+      cartSubtotalEl.textContent = formatPrice(subtotal);
+      const totalItems = cart.reduce((sum, item) => sum + item.quantity, 0);
+      cartCountEl.textContent = totalItems;
+    }
+
+    function changeQuantity(productId, delta) {
+      const item = cart.find((cartItem) => cartItem.id === productId);
+      if (!item) return;
+      item.quantity += delta;
+      if (item.quantity <= 0) {
+        const index = cart.findIndex((cartItem) => cartItem.id === productId);
+        if (index !== -1) {
+          cart.splice(index, 1);
+        }
+      }
+      updateCartUI();
+    }
+
+    function removeFromCart(productId) {
+      const index = cart.findIndex((cartItem) => cartItem.id === productId);
+      if (index !== -1) {
+        cart.splice(index, 1);
+        updateCartUI();
+      }
+    }
+
+    function openCart() {
+      cartModal.classList.remove('hidden');
+      document.body.classList.add('modal-open');
+    }
+
+    function closeCart() {
+      cartModal.classList.add('hidden');
+      document.body.classList.remove('modal-open');
+    }
+
+    function openProductModal(productId) {
+      const product = products.find((item) => item.id === productId);
+      if (!product) return;
+      activeProduct = product;
+      modalQuantity = 1;
+      modalProductName.textContent = product.name;
+      modalProductBrand.textContent = product.brand;
+      modalProductPrice.textContent = formatPrice(product.price);
+      modalProductDescription.textContent = product.description;
+      modalPrimaryImage.src = product.gallery?.[0] || product.imageUrl;
+      modalOptions.innerHTML = '';
+      product.options.forEach((option) => {
+        const optionEl = document.createElement('option');
+        optionEl.value = option;
+        optionEl.textContent = option;
+        modalOptions.appendChild(optionEl);
+      });
+      modalGallery.innerHTML = '';
+      (product.gallery || []).forEach((image, index) => {
+        const thumb = document.createElement('button');
+        thumb.type = 'button';
+        thumb.className = 'overflow-hidden rounded-xl border border-white/10 bg-black/40 transition hover:border-brand';
+        thumb.innerHTML = `<img src="${image}" alt="${product.name} gallery image ${index + 1}" class="h-20 w-full object-cover" />`;
+        thumb.addEventListener('click', () => {
+          modalPrimaryImage.src = image;
+        });
+        modalGallery.appendChild(thumb);
+      });
+      modalQuantityDisplay.textContent = modalQuantity;
+      productModal.classList.remove('hidden');
+      document.body.classList.add('modal-open');
+    }
+
+    function closeProductModal() {
+      productModal.classList.add('hidden');
+      document.body.classList.remove('modal-open');
+      activeProduct = null;
+    }
+
+    function openSearch() {
+      searchOverlay.classList.remove('hidden');
+      document.body.classList.add('modal-open');
+      renderSearchResults('');
+      setTimeout(() => searchInput.focus(), 100);
+    }
+
+    function closeSearch() {
+      searchOverlay.classList.add('hidden');
+      document.body.classList.remove('modal-open');
+      searchInput.value = '';
+      renderSearchResults('');
+    }
+
+    function renderSearchResults(term) {
+      const query = term.trim().toLowerCase();
+      if (!query) {
+        searchResults.innerHTML = '<p class="text-sm text-gray-500">Start typing to explore our elite lineup.</p>';
+        return;
+      }
+      const matches = products.filter((product) => {
+        return (
+          product.name.toLowerCase().includes(query) ||
+          product.brand.toLowerCase().includes(query) ||
+          product.category.toLowerCase().includes(query)
+        );
+      });
+      if (matches.length === 0) {
+        searchResults.innerHTML = '<p class="text-sm text-gray-500">No products match that search. Try another phrase.</p>';
+        return;
+      }
+      searchResults.innerHTML = '';
+      const fragment = document.createDocumentFragment();
+      matches.forEach((product) => {
+        const resultButton = document.createElement('button');
+        resultButton.type = 'button';
+        resultButton.className = 'w-full rounded-2xl border border-white/10 bg-black/40 p-4 text-left transition hover:border-brand hover:bg-black/60';
+        resultButton.innerHTML = `
+          <div class="flex items-center gap-4">
+            <div class="h-12 w-12 overflow-hidden rounded-xl bg-black/50">
+              <img src="${product.imageUrl}" alt="${product.name}" class="h-full w-full object-cover" />
+            </div>
+            <div class="flex-1">
+              <p class="text-sm font-semibold text-white">${product.name}</p>
+              <p class="text-xs text-gray-400">${product.brand} • ${product.category} • ${formatPrice(product.price)}</p>
+            </div>
+            <span class="text-xs font-semibold uppercase tracking-[0.3em] text-brand">View</span>
+          </div>
+        `;
+        resultButton.addEventListener('click', () => {
+          closeSearch();
+          setTimeout(() => openProductModal(product.id), 150);
+        });
+        fragment.appendChild(resultButton);
+      });
+      searchResults.appendChild(fragment);
+    }
+
+    function setFilter(category) {
+      if (category === activeFilter) return;
+      activeFilter = category;
+      updateFilterTabs();
+      renderProducts();
+    }
+
+    function updateFilterTabs() {
+      filterTabs.forEach((tab) => {
+        const isActive = tab.dataset.category === activeFilter;
+        tab.classList.toggle('bg-brand/10', isActive);
+        tab.classList.toggle('border-brand', isActive);
+        tab.classList.toggle('text-white', isActive);
+        tab.classList.toggle('bg-white/5', !isActive);
+        tab.classList.toggle('border-white/10', !isActive);
+        tab.classList.toggle('text-gray-300', !isActive);
+      });
+    }
+
+    const modalQuantityDecrease = document.getElementById('modal-quantity-decrease');
+    const modalQuantityIncrease = document.getElementById('modal-quantity-increase');
+    const modalAddToCartButton = document.getElementById('modal-add-to-cart');
+    const closeProductButton = document.getElementById('close-product');
+    const openCartButton = document.getElementById('open-cart');
+    const closeCartButton = document.getElementById('close-cart');
+    const openSearchButton = document.getElementById('open-search');
+    const closeSearchButton = document.getElementById('close-search');
+    const checkoutButton = document.getElementById('checkout-button');
+    const yearEl = document.getElementById('year');
+
+    if (yearEl) {
+      yearEl.textContent = new Date().getFullYear();
+    }
+
+    modalQuantityDecrease.addEventListener('click', () => {
+      if (modalQuantity > 1) {
+        modalQuantity -= 1;
+        modalQuantityDisplay.textContent = modalQuantity;
+      }
+    });
+
+    modalQuantityIncrease.addEventListener('click', () => {
+      modalQuantity += 1;
+      modalQuantityDisplay.textContent = modalQuantity;
+    });
+
+    modalAddToCartButton.addEventListener('click', () => {
+      if (!activeProduct) return;
+      addToCart(activeProduct.id, modalQuantity);
+      closeProductModal();
+    });
+
+    closeProductButton.addEventListener('click', closeProductModal);
+
+    openCartButton.addEventListener('click', openCart);
+    closeCartButton.addEventListener('click', closeCart);
+
+    openSearchButton.addEventListener('click', openSearch);
+    closeSearchButton.addEventListener('click', closeSearch);
+
+    checkoutButton.addEventListener('click', () => {
+      if (cart.length === 0) {
+        alert('Add items to your cart before checking out.');
+        return;
+      }
+      alert('Thank you for your order! Your elite setup is on the way.');
+      cart.length = 0;
+      updateCartUI();
+      closeCart();
+    });
+
+    cartItemsContainer.addEventListener('click', (event) => {
+      const quantityButton = event.target.closest('.change-quantity');
+      if (quantityButton) {
+        const productId = quantityButton.dataset.productId;
+        const delta = Number(quantityButton.dataset.delta);
+        changeQuantity(productId, delta);
+      }
+      const removeButton = event.target.closest('.remove-item');
+      if (removeButton) {
+        removeFromCart(removeButton.dataset.removeId);
+      }
+    });
+
+    filterTabs.forEach((tab) => {
+      tab.addEventListener('click', () => {
+        setFilter(tab.dataset.category);
+      });
+    });
+
+    navFilterLinks.forEach((link) => {
+      link.addEventListener('click', () => {
+        const filter = link.dataset.navFilter;
+        if (filter) {
+          setFilter(filter);
+        }
+      });
+    });
+
+    searchInput.addEventListener('input', (event) => {
+      renderSearchResults(event.target.value);
+    });
+
+    document.addEventListener('keydown', (event) => {
+      if (event.key !== 'Escape') return;
+      if (!searchOverlay.classList.contains('hidden')) {
+        closeSearch();
+      } else if (!productModal.classList.contains('hidden')) {
+        closeProductModal();
+      } else if (!cartModal.classList.contains('hidden')) {
+        closeCart();
+      }
+    });
+
+    document.querySelectorAll('[data-overlay="search"]').forEach((overlay) => {
+      overlay.addEventListener('click', closeSearch);
+    });
+
+    document.querySelectorAll('[data-overlay="cart"]').forEach((overlay) => {
+      overlay.addEventListener('click', closeCart);
+    });
+
+    document.querySelectorAll('[data-overlay="product"]').forEach((overlay) => {
+      overlay.addEventListener('click', closeProductModal);
+    });
+
+    renderFeatured();
+    renderProducts();
+    renderDeals();
+    updateFilterTabs();
+    updateCartUI();
+  </script>
+</body>
+</html>
+
