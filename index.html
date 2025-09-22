@@ -1,0 +1,453 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Aura Gaming Gear | Elite Esports Peripherals</title>
+    <meta
+      name="description"
+      content="Elite esports mice, keyboards, and mousepads engineered for victory."
+    />
+    <meta property="og:title" content="Aura Gaming Gear | Elite Esports Peripherals" />
+    <meta
+      property="og:description"
+      content="Perfection in every pixel. Shop tournament-ready gear."
+    />
+    <meta property="og:type" content="website" />
+    <meta property="og:image" content="https://placehold.co/1200x630/png?text=Aura+Gaming+Gear" />
+    <meta property="og:url" content="https://example.com/" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <link rel="canonical" href="https://example.com/" />
+    <meta
+      http-equiv="Content-Security-Policy"
+      content="default-src 'self'; img-src 'self' https: data:; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; script-src 'self'; frame-ancestors 'none';"
+    />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Inter:wght@600&display=swap" />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap"
+      rel="stylesheet"
+    />
+    <link
+      rel="preload"
+      as="image"
+      href="https://placehold.co/1600x900/png?text=Next-Gen+Setup"
+      imagesrcset="https://placehold.co/800x450/png?text=Next-Gen+Setup 800w, https://placehold.co/1200x675/png?text=Next-Gen+Setup 1200w, https://placehold.co/1600x900/png?text=Next-Gen+Setup 1600w"
+      imagesizes="100vw"
+    />
+    <link rel="stylesheet" href="assets/styles.css" />
+    <script defer src="app.js"></script>
+    <script id="product-jsonld" type="application/ld+json"></script>
+  </head>
+  <body class="text-gray-100">
+    <a
+      href="#products"
+      class="sr-only focus:not-sr-only focus:fixed focus:top-3 focus:left-3 focus:z-[80] rounded-full bg-black px-4 py-2 text-sm font-medium text-white shadow-lg focus-ring"
+    >
+      Skip to products
+    </a>
+    <div id="a11y-live" class="sr-only" aria-live="polite"></div>
+
+    <!-- Search Overlay -->
+    <div
+      id="search-overlay"
+      class="fixed inset-0 z-[60] hidden"
+      role="dialog"
+      aria-modal="true"
+      aria-labelledby="search-heading"
+    >
+      <div class="absolute inset-0 bg-black/80 backdrop-blur-sm" data-overlay="search"></div>
+      <div class="relative flex h-full flex-col items-center justify-center px-4">
+        <div class="w-full max-w-2xl rounded-3xl border border-white/10 bg-[#181818] p-8 shadow-xl shadow-black/40">
+          <div class="mb-6 flex items-center justify-between">
+            <h2 id="search-heading" class="text-lg font-semibold tracking-wide text-gray-300">
+              Search Aura Catalog
+            </h2>
+            <button
+              type="button"
+              id="close-search"
+              class="rounded-full bg-white/5 p-2 text-gray-400 transition hover:bg-white/10 hover:text-white focus-ring"
+            >
+              <span class="sr-only">Close search overlay</span>
+              <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5" aria-hidden="true">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
+              </svg>
+            </button>
+          </div>
+          <div class="flex items-center gap-3 rounded-full border border-white/10 bg-black/40 px-5 py-3">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-brand" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5" aria-hidden="true">
+              <path stroke-linecap="round" stroke-linejoin="round" d="m21 21-4.35-4.35M18 10.5a7.5 7.5 0 1 1-15 0 7.5 7.5 0 0 1 15 0Z" />
+            </svg>
+            <input
+              id="search-input"
+              type="search"
+              placeholder="Search products, brands, or categories"
+              class="w-full bg-transparent text-sm text-white placeholder:text-gray-500 focus:outline-none"
+              data-autofocus
+            />
+          </div>
+          <div id="search-results" class="mt-6 space-y-2" role="list"></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Cart Modal -->
+    <div
+      id="cart-modal"
+      class="fixed inset-0 z-[70] hidden"
+      role="dialog"
+      aria-modal="true"
+      aria-labelledby="cart-heading"
+    >
+      <div class="absolute inset-0 bg-black/70 transition-opacity" data-overlay="cart"></div>
+      <div class="relative flex h-full justify-end">
+        <aside class="flex h-full w-full max-w-md flex-col border-l border-white/10 bg-[#141414] shadow-2xl shadow-black/50">
+          <div class="flex items-center justify-between border-b border-white/10 px-6 py-5">
+            <h2 id="cart-heading" class="text-lg font-semibold tracking-wide">Your Cart</h2>
+            <button
+              type="button"
+              id="close-cart"
+              class="rounded-full bg-white/5 p-2 text-gray-400 transition hover:bg-white/10 hover:text-white focus-ring"
+              data-autofocus
+            >
+              <span class="sr-only">Close cart</span>
+              <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5" aria-hidden="true">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
+              </svg>
+            </button>
+          </div>
+          <div id="cart-items" class="flex-1 space-y-4 overflow-y-auto px-6 py-6"></div>
+          <div class="border-t border-white/10 px-6 py-6">
+            <div class="mb-4 flex items-center justify-between text-sm">
+              <span class="text-gray-400">Subtotal</span>
+              <span id="cart-subtotal" class="text-base font-semibold text-white">$0.00</span>
+            </div>
+            <button
+              type="button"
+              id="checkout-button"
+              class="group flex w-full items-center justify-center gap-2 rounded-full bg-brand px-6 py-3 text-sm font-semibold text-white transition hover:brightness-110 focus-ring"
+            >
+              Proceed to Checkout
+              <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 transition group-hover:translate-x-1" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5" aria-hidden="true">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M4.5 12h15m0 0-6-6m6 6-6 6" />
+              </svg>
+            </button>
+          </div>
+        </aside>
+      </div>
+    </div>
+
+    <!-- Product Detail Modal -->
+    <div
+      id="product-modal"
+      class="fixed inset-0 z-[65] hidden"
+      role="dialog"
+      aria-modal="true"
+      aria-labelledby="modal-product-name"
+    >
+      <div class="absolute inset-0 bg-black/70" data-overlay="product"></div>
+      <div class="relative flex h-full items-center justify-center px-4 py-10">
+        <div class="w-full max-w-5xl rounded-3xl border border-white/10 bg-[#161616] shadow-2xl shadow-black/40">
+          <div class="flex flex-col gap-10 p-6 md:flex-row md:p-10">
+            <div class="flex-1">
+              <div class="grid gap-4 sm:grid-cols-3">
+                <div class="relative overflow-hidden rounded-2xl bg-black/40 sm:col-span-3">
+                  <img
+                    id="modal-primary-image"
+                    src="https://placehold.co/900x900/png?text=Product"
+                    alt="Product primary view"
+                    class="h-full w-full object-cover"
+                    width="900"
+                    height="900"
+                    decoding="async"
+                  />
+                </div>
+                <div id="modal-gallery" class="grid grid-cols-3 gap-3"></div>
+              </div>
+            </div>
+            <div class="flex-1 space-y-6">
+              <div class="flex items-start justify-between gap-6">
+                <div>
+                  <p id="modal-product-brand" class="text-xs uppercase tracking-[0.4em] text-brand">AURA</p>
+                  <h3 id="modal-product-name" class="mt-2 text-2xl font-bold text-white">Product Name</h3>
+                </div>
+                <button
+                  type="button"
+                  id="close-product"
+                  class="rounded-full bg-white/5 p-2 text-gray-400 transition hover:bg-white/10 hover:text-white focus-ring"
+                  data-autofocus
+                >
+                  <span class="sr-only">Close product detail</span>
+                  <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5" aria-hidden="true">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
+                  </svg>
+                </button>
+              </div>
+              <div id="modal-product-price" class="text-xl font-semibold text-white">$0.00</div>
+              <p id="modal-product-description" class="text-sm leading-relaxed text-gray-400">
+                Lorem ipsum dolor sit amet, consectetur adipiscing elit.
+              </p>
+              <div class="space-y-4">
+                <label class="block text-xs font-semibold uppercase tracking-wider text-gray-400" for="modal-options"
+                  >Select Option</label
+                >
+                <select
+                  id="modal-options"
+                  class="w-full rounded-2xl border border-white/10 bg-black/40 px-4 py-3 text-sm text-gray-200 focus:border-brand focus:outline-none"
+                ></select>
+              </div>
+              <div class="flex items-center gap-4">
+                <div class="flex items-center rounded-full border border-white/10 bg-black/40 text-sm">
+                  <button
+                    type="button"
+                    id="modal-quantity-decrease"
+                    class="px-4 py-3 text-gray-400 transition hover:text-white focus-ring"
+                  >
+                    -
+                  </button>
+                  <span id="modal-quantity" class="min-w-[2.5rem] text-center font-semibold">1</span>
+                  <button
+                    type="button"
+                    id="modal-quantity-increase"
+                    class="px-4 py-3 text-gray-400 transition hover:text-white focus-ring"
+                  >
+                    +
+                  </button>
+                </div>
+                <button
+                  type="button"
+                  id="modal-add-to-cart"
+                  class="flex-1 rounded-full bg-brand px-6 py-3 text-sm font-semibold text-white transition hover:brightness-110 focus-ring"
+                >
+                  Add to Cart
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <header class="fixed inset-x-0 top-0 z-50 border-b border-white/5 bg-[#121212]/90 backdrop-blur-xl">
+      <div class="mx-auto flex max-w-6xl items-center justify-between px-4 py-4">
+        <a href="#top" class="text-xl font-semibold tracking-[0.5em] text-white focus-ring">AURA</a>
+        <nav class="hidden items-center gap-8 text-sm font-medium text-gray-300 md:flex">
+          <a href="#products" data-nav-filter="All" class="transition hover:text-white focus-ring">All</a>
+          <a href="#products" data-nav-filter="Mice" class="transition hover:text-white focus-ring">Mice</a>
+          <a href="#products" data-nav-filter="Keyboards" class="transition hover:text-white focus-ring">Keyboards</a>
+          <a href="#products" data-nav-filter="Mousepads" class="transition hover:text-white focus-ring">Mousepads</a>
+          <a href="#deals" class="transition hover:text-white focus-ring">Deals</a>
+        </nav>
+        <div class="flex items-center gap-3">
+          <button
+            type="button"
+            id="open-search"
+            class="rounded-full bg-white/5 p-2 text-gray-300 transition hover:bg-white/10 hover:text-white focus-ring"
+          >
+            <span class="sr-only">Open search</span>
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5" aria-hidden="true">
+              <path stroke-linecap="round" stroke-linejoin="round" d="m21 21-4.35-4.35M18 10.5a7.5 7.5 0 1 1-15 0 7.5 7.5 0 0 1 15 0Z" />
+            </svg>
+          </button>
+          <button
+            type="button"
+            id="open-cart"
+            class="relative rounded-full bg-white/5 p-2 text-gray-300 transition hover:bg-white/10 hover:text-white focus-ring"
+            aria-label="Open shopping cart"
+          >
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5" aria-hidden="true">
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                d="M2.25 3h1.386c.51 0 .955.343 1.087.835l.383 1.437m0 0L6.6 12.75a1.125 1.125 0 0 0 1.092.84h8.272a1.125 1.125 0 0 0 1.092-.84l1.196-5.478a.563.563 0 0 0-.548-.684H5.03m0 0-.524-1.962A1.125 1.125 0 0 0 3.405 3H2.25m3.75 15.75a1.5 1.5 0 1 0 3 0 1.5 1.5 0 0 0-3 0Zm10.5 0a1.5 1.5 0 1 0 3 0 1.5 1.5 0 0 0-3 0Z"
+              />
+            </svg>
+            <span id="cart-count" class="absolute -right-1 -top-1 flex h-5 min-w-[1.25rem] items-center justify-center rounded-full bg-brand px-1 text-[10px] font-semibold text-white" aria-hidden="true">0</span>
+          </button>
+        </div>
+      </div>
+    </header>
+
+    <main id="top" class="pt-28">
+      <section class="mx-auto max-w-6xl px-4 pb-20">
+        <div class="relative overflow-hidden rounded-3xl border border-white/10 bg-[#161616]">
+          <div class="absolute inset-0 bg-gradient-to-r from-black/80 via-black/50 to-transparent"></div>
+          <img
+            src="https://placehold.co/1600x900/png?text=Next-Gen+Setup"
+            srcset="https://placehold.co/800x450/png?text=Next-Gen+Setup 800w, https://placehold.co/1200x675/png?text=Next-Gen+Setup 1200w, https://placehold.co/1600x900/png?text=Next-Gen+Setup 1600w"
+            sizes="(min-width: 1024px) 1000px, 100vw"
+            alt="Premium gaming setup"
+            class="h-full w-full object-cover"
+            width="1600"
+            height="900"
+            loading="eager"
+            decoding="async"
+          />
+          <div class="relative flex min-h-[420px] flex-col justify-center gap-6 px-8 py-16 sm:px-16">
+            <p class="text-xs font-semibold uppercase tracking-[0.6em] text-gray-300">Aura Gaming Gear</p>
+            <h1 class="max-w-xl text-4xl font-bold leading-tight text-white sm:text-5xl">Perfection in every pixel</h1>
+            <p class="max-w-lg text-sm text-gray-300 sm:text-base">
+              Engineered for victory. Explore our curated collection of elite esports gear built for unrivaled speed, precision, and control.
+            </p>
+            <div class="flex flex-wrap items-center gap-4">
+              <a
+                href="#products"
+                class="inline-flex items-center gap-3 rounded-full bg-brand px-8 py-3 text-sm font-semibold uppercase tracking-widest text-white transition hover:brightness-110 focus-ring"
+              >
+                Shop New Arrivals
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5" aria-hidden="true">
+                  <path stroke-linecap="round" stroke-linejoin="round" d="M4.5 12h15m0 0-6-6m6 6-6 6" />
+                </svg>
+              </a>
+              <span class="text-xs uppercase tracking-[0.5em] text-gray-400">Trusted by pro teams worldwide</span>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section class="mx-auto max-w-6xl px-4 pb-20">
+        <div class="mb-10 flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
+          <div>
+            <p class="text-xs font-semibold uppercase tracking-[0.6em] text-brand">Featured</p>
+            <h2 class="mt-2 text-2xl font-bold text-white sm:text-3xl">Best Sellers</h2>
+          </div>
+          <p class="max-w-xl text-sm text-gray-400">
+            Meet the essentials trusted by top-tier esports talent. Crafted with cutting-edge materials and tuned for relentless performance in every match.
+          </p>
+        </div>
+        <div id="featured-grid" class="grid gap-6 md:grid-cols-2 xl:grid-cols-4"></div>
+      </section>
+
+      <section id="products" class="mx-auto max-w-6xl px-4 pb-20">
+        <div class="mb-10 flex flex-col gap-6">
+          <div class="flex flex-col gap-3 sm:flex-row sm:items-end sm:justify-between">
+            <div>
+              <p class="text-xs font-semibold uppercase tracking-[0.6em] text-brand">Catalog</p>
+              <h2 class="mt-2 text-2xl font-bold text-white sm:text-3xl">Precision Crafted for Champions</h2>
+            </div>
+            <p class="max-w-md text-sm text-gray-400">
+              Choose from tournament-ready mice, hot-swappable keyboards, and friction-tuned mousepads designed to elevate your playstyle.
+            </p>
+          </div>
+          <div id="filter-tabs" class="flex flex-wrap gap-3">
+            <button
+              type="button"
+              data-category="All"
+              class="filter-tab focus-ring rounded-full border border-white/10 bg-white/5 px-5 py-2 text-xs font-semibold uppercase tracking-[0.4em] text-gray-300 transition hover:border-brand hover:text-white"
+            >
+              All
+            </button>
+            <button
+              type="button"
+              data-category="Mice"
+              class="filter-tab focus-ring rounded-full border border-white/10 bg-white/5 px-5 py-2 text-xs font-semibold uppercase tracking-[0.4em] text-gray-300 transition hover:border-brand hover:text-white"
+            >
+              Mice
+            </button>
+            <button
+              type="button"
+              data-category="Keyboards"
+              class="filter-tab focus-ring rounded-full border border-white/10 bg-white/5 px-5 py-2 text-xs font-semibold uppercase tracking-[0.4em] text-gray-300 transition hover:border-brand hover:text-white"
+            >
+              Keyboards
+            </button>
+            <button
+              type="button"
+              data-category="Mousepads"
+              class="filter-tab focus-ring rounded-full border border-white/10 bg-white/5 px-5 py-2 text-xs font-semibold uppercase tracking-[0.4em] text-gray-300 transition hover:border-brand hover:text-white"
+            >
+              Mousepads
+            </button>
+          </div>
+        </div>
+        <div id="product-grid" class="grid gap-6 sm:grid-cols-2 lg:grid-cols-3"></div>
+        <div
+          id="product-empty-state"
+          class="hidden rounded-3xl border border-dashed border-white/10 bg-black/30 p-10 text-center text-sm text-gray-400"
+        >
+          No products found for this category. Try another filter or explore our featured gear above.
+        </div>
+      </section>
+
+      <section id="deals" class="mx-auto max-w-6xl px-4 pb-24">
+        <div class="rounded-3xl border border-brand/30 bg-gradient-to-r from-brand/20 via-transparent to-transparent p-10">
+          <div class="flex flex-col gap-8 lg:flex-row lg:items-center lg:justify-between">
+            <div class="max-w-xl">
+              <p class="text-xs font-semibold uppercase tracking-[0.6em] text-brand">Seasonal Deals</p>
+              <h2 class="mt-2 text-2xl font-bold text-white sm:text-3xl">Elevate Your Setup for Less</h2>
+              <p class="mt-4 text-sm text-gray-300">
+                Limited-time bundles and exclusive price drops for the community. Gear up with pro-tier hardware while supplies last.
+              </p>
+            </div>
+            <a
+              href="#products"
+              class="inline-flex items-center gap-3 rounded-full border border-brand/60 px-6 py-3 text-xs font-semibold uppercase tracking-[0.4em] text-brand transition hover:bg-brand hover:text-white focus-ring"
+            >
+              Shop Flash Deals
+              <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5" aria-hidden="true">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M4.5 12h15m0 0-6-6m6 6-6 6" />
+              </svg>
+            </a>
+          </div>
+          <div id="deal-grid" class="mt-10 grid gap-6 md:grid-cols-3"></div>
+        </div>
+      </section>
+    </main>
+
+    <footer class="border-t border-white/5 bg-[#101010]">
+      <div class="mx-auto grid max-w-6xl gap-10 px-4 py-16 sm:grid-cols-3">
+        <div class="space-y-4">
+          <span class="text-lg font-semibold tracking-[0.5em] text-white">AURA</span>
+          <p class="text-sm text-gray-400">
+            Crafted for the relentless. Aura Gaming Gear delivers uncompromising precision and design for esports athletes ready to push beyond limits.
+          </p>
+        </div>
+        <div>
+          <p class="text-xs font-semibold uppercase tracking-[0.5em] text-gray-500">Explore</p>
+          <ul class="mt-4 space-y-2 text-sm text-gray-400">
+            <li><a href="#about" class="transition hover:text-white focus-ring">About Us</a></li>
+            <li><a href="#contact" class="transition hover:text-white focus-ring">Contact</a></li>
+            <li><a href="#faq" class="transition hover:text-white focus-ring">FAQ</a></li>
+            <li><a href="#shipping" class="transition hover:text-white focus-ring">Shipping &amp; Returns</a></li>
+          </ul>
+        </div>
+        <div>
+          <p class="text-xs font-semibold uppercase tracking-[0.5em] text-gray-500">Connect</p>
+          <div class="mt-4 flex gap-3">
+            <a
+              href="https://twitter.com"
+              class="flex h-10 w-10 items-center justify-center rounded-full border border-white/10 text-gray-300 transition hover:border-brand hover:text-brand focus-ring"
+              aria-label="Twitter"
+            >
+              <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+                <path d="M21.75 4.5a6.5 6.5 0 0 1-1.89.518 3.27 3.27 0 0 0 1.44-1.815 6.525 6.525 0 0 1-2.07.812A3.262 3.262 0 0 0 12.75 6.52a9.257 9.257 0 0 1-6.724-3.41 3.26 3.26 0 0 0 1.011 4.352A3.232 3.232 0 0 1 5 6.87v.041a3.26 3.26 0 0 0 2.617 3.197 3.277 3.277 0 0 1-.857.114 3.09 3.09 0 0 1-.614-.058 3.266 3.266 0 0 0 3.046 2.262A6.538 6.538 0 0 1 4.5 14.712a6.75 6.75 0 0 1-.78-.045 9.209 9.209 0 0 0 4.988 1.462c5.986 0 9.26-4.964 9.26-9.262 0-.142-.003-.283-.01-.423A6.62 6.62 0 0 0 21.75 4.5Z" />
+              </svg>
+            </a>
+            <a
+              href="https://instagram.com"
+              class="flex h-10 w-10 items-center justify-center rounded-full border border-white/10 text-gray-300 transition hover:border-brand hover:text-brand focus-ring"
+              aria-label="Instagram"
+            >
+              <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+                <path d="M12 7.75a4.25 4.25 0 1 0 0 8.5 4.25 4.25 0 0 0 0-8.5Zm8.25-3a3 3 0 0 0-3-3h-10.5a3 3 0 0 0-3 3v10.5a3 3 0 0 0 3 3h10.5a3 3 0 0 0 3-3V4.75Zm-2 0a1 1 0 0 1 1 1v10.5a1 1 0 0 1-1 1h-10.5a1 1 0 0 1-1-1V4.75a1 1 0 0 1 1-1h10.5Zm-.75 1.75a1 1 0 1 0-2 0 1 1 0 0 0 2 0Z" />
+              </svg>
+            </a>
+            <a
+              href="https://discord.com"
+              class="flex h-10 w-10 items-center justify-center rounded-full border border-white/10 text-gray-300 transition hover:border-brand hover:text-brand focus-ring"
+              aria-label="Discord"
+            >
+              <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+                <path d="M20.317 4.37a19.791 19.791 0 0 0-4.885-1.515.076.076 0 0 0-.081.038c-.211.375-.444.865-.608 1.249-1.844-.276-3.68-.276-5.486 0-.164-.402-.415-.874-.626-1.249a.077.077 0 0 0-.081-.038 19.736 19.736 0 0 0-4.885 1.515.069.069 0 0 0-.032.028C2.18 8.022 1.5 11.58 1.833 15.095a.082.082 0 0 0 .031.056 19.9 19.9 0 0 0 5.993 3.04.078.078 0 0 0 .084-.028c.461-.63.874-1.295 1.226-1.994a.076.076 0 0 0-.041-.104c-.652-.247-1.27-.547-1.862-.892a.077.077 0 0 1-.008-.127c.125-.094.25-.191.37-.287a.077.077 0 0 1 .081-.01c3.927 1.794 8.18 1.794 12.061 0a.077.077 0 0 1 .082.009c.12.096.245.194.37.288a.077.077 0 0 1-.007.127c-.592.351-1.21.65-1.863.897a.077.077 0 0 0-.041.104c.36.699.773 1.365 1.226 1.994a.077.077 0 0 0 .084.028 19.874 19.874 0 0 0 6.002-3.04.077.077 0 0 0 .031-.055c.5-5.177-.838-8.705-3.548-10.698a.061.061 0 0 0-.031-.029Zm-12.573 8.108c-.794 0-1.45-.73-1.45-1.631 0-.9.641-1.631 1.45-1.631.818 0 1.468.739 1.45 1.631 0 .9-.641 1.631-1.45 1.631Zm8.509 0c-.794 0-1.45-.73-1.45-1.631 0-.9.641-1.631 1.45-1.631.818 0 1.468.739 1.45 1.631 0 .9-.632 1.631-1.45 1.631Z" />
+              </svg>
+            </a>
+          </div>
+        </div>
+      </div>
+      <div class="border-t border-white/5 py-6 text-center text-xs text-gray-500">
+        © <span id="year"></span> Aura Gaming Gear. All rights reserved.
+      </div>
+    </footer>
+  </body>
+</html>
